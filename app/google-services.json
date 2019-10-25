@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "862311258119",
+    "firebase_url": "https://pdafirebaseproject-81d0b.firebaseio.com",
+    "project_id": "pdafirebaseproject-81d0b",
+    "storage_bucket": "pdafirebaseproject-81d0b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862311258119:android:0077fb564ba825423ef2a2",
+        "android_client_info": {
+          "package_name": "ru.ping.pda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862311258119-fbhrvfj1d1a581bi6ue2kmdb8ff7q4p2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.ping.pda",
+            "certificate_hash": "0653f7433794387a8742cd1829563719dba46564"
+          }
+        },
+        {
+          "client_id": "862311258119-9r33tmonem58n9630s8alebu910tfpj3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL-VQRxJVoDhtY6e8VFWhUHrtZFED-OjE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862311258119-9r33tmonem58n9630s8alebu910tfpj3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,11 @@
 package ru.ping.pda.Fragments
 
 import android.content.Context
+import android.content.res.Resources
+import android.content.res.Resources.Theme
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import androidx.fragment.app.Fragment
@@ -52,6 +55,9 @@ class MapFragment : Fragment() {
         mapController.setZoom(16.5) // установка велечины зума при первоначальном запуске карты
         mMap.setMultiTouchControls(true) // управление зумом двумя пальцами
         var marker: Marker = Marker(mMap) // маркер точка на карте
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            marker.icon=resources.getDrawable(R.drawable.ic_position_point,null)
+        }
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(mView.context)
         //получение последних gps координат
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
@@ -70,7 +76,8 @@ class MapFragment : Fragment() {
                     for(location in locationsResult.locations){
                         marker.position= GeoPoint(location.latitude,location.longitude)
                         mMap.overlays.add(marker)
-                        mapController.setCenter(GeoPoint(location.latitude,location.longitude))
+                        //центровать карту по маркеру
+                        //mapController.setCenter(GeoPoint(location.latitude,location.longitude))
                     }
 
                 }
@@ -81,10 +88,11 @@ class MapFragment : Fragment() {
     }
 
     fun startLocationUpdate(){
-        val request = LocationRequest()
-        request.setInterval(10 * 60 * 1000)
-        request.setMaxWaitTime(1 * 60 * 1000)
-
+        val request = LocationRequest.create().apply {
+            interval =2000
+            fastestInterval = 1000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
         fusedLocationClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper())
     }
 

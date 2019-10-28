@@ -1,6 +1,7 @@
 package ru.ping.pda.Fragments
 
 import android.content.Context
+import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -8,11 +9,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.location.*
 import org.osmdroid.api.IMapController
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import ru.ping.pda.R
+import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.concurrent.timer
+import kotlin.concurrent.timerTask
 
 /*
 фрагмент отображения карты OpenStreetMap
@@ -23,6 +29,11 @@ import ru.ping.pda.R
  */
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+//глобальные переменные для геопозиции--------------------------------------------------------------
+private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+private lateinit var locationRequest: LocationRequest
+private lateinit var locationCallback: LocationCallback
+private lateinit var location:Location
 
 
 class MapFragment : Fragment(){
@@ -39,6 +50,7 @@ class MapFragment : Fragment(){
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        getLocationUpdate()
     }
 
     override fun onCreateView(
@@ -61,11 +73,52 @@ class MapFragment : Fragment(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             marker.icon = resources.getDrawable(R.drawable.ic_position_point, null)
         }
+
+        Timer().schedule(1000){
+            
+        }
+
+
         return mView
     }
 
+    private fun getLocationUpdate(){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context!!)
+        locationRequest = LocationRequest()
+        locationRequest.interval = 500
+        locationRequest.fastestInterval = 500
+        locationRequest.smallestDisplacement = 10f
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationCallback = object : LocationCallback(){
+            override fun onLocationResult(p0: LocationResult?) {
+                super.onLocationResult(p0)
+                if (p0 != null) {
+                    if (p0.locations.isNotEmpty()) location = p0.lastLocation
+                }
+            }
+        }
+    }
 
+    private fun startLocationUpdate(){
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            null
+        )
+    }
+    private fun stopLocationUpdate(){
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdate()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdate()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

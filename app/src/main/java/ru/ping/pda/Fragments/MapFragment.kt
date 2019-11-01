@@ -16,6 +16,8 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Polyline
+import ru.ping.pda.Data_Model.GPS_Data_Track
 import ru.ping.pda.R
 import java.util.*
 import kotlin.concurrent.schedule
@@ -28,7 +30,7 @@ import kotlin.concurrent.schedule
 установка областей получнных от других источников, отрисовка трека. расположение объектов на карте создание ответных действий при приближении к заданному объекту.
 сохранение геоданных на устройстве(трека)
  */
-private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM_ON_TRACK = "track"
 private const val ARG_PARAM2 = "param2"
 //глобальные переменные для геопозиции--------------------------------------------------------------
 private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -39,9 +41,9 @@ private lateinit var locationCallback: LocationCallback
 
 class MapFragment : Fragment() {
 
-
+    //var track:GPS_Data_Track = GPS_Data_Track("",0.0,0.0)
     // это сгенерированный код
-    private var param1: String? = null
+    private var param_track: Boolean? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     var fistrun: Boolean = true
@@ -49,7 +51,7 @@ class MapFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            param_track = it.getBoolean(ARG_PARAM_ON_TRACK)
             param2 = it.getString(ARG_PARAM2)
         }
 
@@ -74,11 +76,15 @@ class MapFragment : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             marker.icon = resources.getDrawable(R.drawable.ic_position_point, null)
         }
-        getLocationUpdate(mView.context,mMap,marker,mapController)
+        //------------------------------------------------------------------------------------------
+        //Polyline----------------------------------------------------------------------------------
+        var polylain: Polyline = Polyline(mMap)
+        //------------------------------------------------------------------------------------------
+        getLocationUpdate(mView.context,mMap,marker,mapController,polylain)
         return mView
     }
 
-    private fun getLocationUpdate(context: Context,map :MapView, marker:Marker,mapController:IMapController) {
+    private fun getLocationUpdate(context: Context,map :MapView, marker:Marker,mapController:IMapController,track:Polyline) {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
         locationRequest = LocationRequest()
         locationRequest.interval = 500
@@ -91,6 +97,7 @@ class MapFragment : Fragment() {
                 if (p0 != null) {
                     marker.position = GeoPoint(p0.lastLocation.latitude,p0.lastLocation.longitude)
                     map.overlays.add(marker)
+                    track.addPoint(GeoPoint(p0.lastLocation.latitude,p0.lastLocation.longitude))
                     map.invalidate()
                    // map.refreshDrawableState()
                     if (fistrun){
@@ -147,10 +154,10 @@ class MapFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(ptrack: Boolean, param2: String) =
             MapFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    putBoolean(ARG_PARAM_ON_TRACK, ptrack)
                     putString(ARG_PARAM2, param2)
                 }
             }

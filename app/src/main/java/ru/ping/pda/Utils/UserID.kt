@@ -9,7 +9,7 @@ class UserID {
     @SuppressLint("MissingPermission", "NewApi")
     fun generateUSserID(context:Context):String{
         val telService:TelephonyManager= context.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
-        val imei = telService.imei
+        val imei = telService.deviceId
         var data = imei.toInt()
         data = data*19830502/2000+3
         return data.toString()

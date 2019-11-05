@@ -9,9 +9,10 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import ru.ping.pda.Fragments.MapFragment
-
-class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
+import ru.ping.pda.Fragments.SettingsFragment
+class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener,
     View.OnClickListener {
+
     lateinit var menu_Button: Button
     lateinit var record_Button: Button
     lateinit var mail_Button: Button
@@ -32,14 +33,15 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         setContentView(R.layout.activity_main)
-
         initElements()
         runFragment(FRAGMENT_MAP_NEW)
     }
 
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.id_button_PDA_MENU -> {
+                supportFragmentManager.beginTransaction().replace(R.id.id_Conteiner_Fragment,SettingsFragment()).commit()
             }
             R.id.id_button_PDA_POSITION -> {
                 runFragment(FRAGMENT_MAP_REFRESH)

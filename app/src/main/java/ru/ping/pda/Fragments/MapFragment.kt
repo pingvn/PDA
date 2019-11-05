@@ -1,7 +1,6 @@
 package ru.ping.pda.Fragments
 
 import android.content.Context
-import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,18 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.location.*
 import org.osmdroid.api.IMapController
-import org.osmdroid.api.IMapView
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
-import ru.ping.pda.Data_Model.GPS_Data_Track
 import ru.ping.pda.R
-import java.util.*
-import kotlin.concurrent.schedule
+import ru.ping.pda.Utils.GPS
+
 
 
 /*
@@ -33,11 +28,9 @@ import kotlin.concurrent.schedule
 private const val ARG_PARAM_ON_TRACK = "track"
 private const val ARG_PARAM2 = "param2"
 //глобальные переменные для геопозиции--------------------------------------------------------------
-private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-private lateinit var locationRequest: LocationRequest
-private lateinit var locationCallback: LocationCallback
 
 
+var fistrun: Boolean = true
 
 class MapFragment : Fragment() {
 
@@ -45,9 +38,9 @@ class MapFragment : Fragment() {
     // это сгенерированный код
     private var param_track: Boolean? = null
     private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
-    var fistrun: Boolean = true
+    private var listener: MapFragment.OnFragmentInteractionListener? = null
 
+    val gps=GPS()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -79,58 +72,27 @@ class MapFragment : Fragment() {
         //------------------------------------------------------------------------------------------
         //Polyline----------------------------------------------------------------------------------
         var polylain: Polyline = Polyline(mMap)
+        polylain.color=resources.getColor(R.color.colorLine)
         //------------------------------------------------------------------------------------------
-        getLocationUpdate(mView.context,mMap,marker,mapController,polylain)
+        gps.getLocationUpdate(mView.context,mMap,marker,mapController,polylain)
+        if(fistrun){
+            fistrun = false
+            gps.centerMapView(mapController)
+        }
         return mView
     }
 
-    private fun getLocationUpdate(context: Context,map :MapView, marker:Marker,mapController:IMapController,track:Polyline) {
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
-        locationRequest = LocationRequest()
-        locationRequest.interval = 500
-        locationRequest.fastestInterval = 500
-        locationRequest.smallestDisplacement = 10f
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(p0: LocationResult?) {
-                super.onLocationResult(p0)
-                if (p0 != null) {
-                    marker.position = GeoPoint(p0.lastLocation.latitude,p0.lastLocation.longitude)
-                    map.overlays.add(marker)
-                    track.addPoint(GeoPoint(p0.lastLocation.latitude,p0.lastLocation.longitude))
-                    map.invalidate()
-                   // map.refreshDrawableState()
-                    if (fistrun){
-                        fistrun = false
-                        mapController.setCenter(GeoPoint(p0.lastLocation.latitude,p0.lastLocation.longitude))
-                    }
 
-                }
-            }
-        }
-    }
-
-    private fun startLocationUpdate() {
-        fusedLocationProviderClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            null
-        )
-    }
-
-    private fun stopLocationUpdate() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
 
 
     override fun onResume() {
         super.onResume()
-        startLocationUpdate()
+        gps.startLocationUpdate()
     }
 
     override fun onPause() {
         super.onPause()
-        stopLocationUpdate()
+       gps.stopLocationUpdate()
     }
 
     override fun onAttach(context: Context) {
@@ -145,6 +107,7 @@ class MapFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        fistrun = true
     }
 
     interface OnFragmentInteractionListener {

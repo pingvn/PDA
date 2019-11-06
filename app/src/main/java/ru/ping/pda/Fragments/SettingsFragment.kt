@@ -1,31 +1,24 @@
 package ru.ping.pda.Fragments
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-
+import android.widget.CheckBox
 import ru.ping.pda.R
-import ru.ping.pda.Utils.UserID
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class SettingsFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+    private var listener: OnFragmentSettingsListener? = null
+    var chexBoxTreck: CheckBox? = null
+    var checkBoxLine: CheckBox? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -33,17 +26,18 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val mView = inflater.inflate(R.layout.fragment_settings, container, false)
-        //------------------------------------------------------------------------------------------
-
-        //  val imaiText = mView.findViewById<TextView>(R.id.id_text_imei)
-        //var userid:UserID = UserID()
-       // imaiText.text=userid.generateUSserID(mView.context)
+        initElement(mView)
         return mView
+    }
+
+    fun initElement(view: View) {
+        checkBoxLine = view.findViewById(R.id.id_Settings_check_line)
+        chexBoxTreck = view.findViewById(R.id.id_Settings_check_track)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
+        if (context is OnFragmentSettingsListener) {
             listener = context
         } else {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
@@ -56,19 +50,9 @@ class SettingsFragment : Fragment() {
     }
 
 
-    interface OnFragmentInteractionListener {
+    interface OnFragmentSettingsListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onFragmentSettings(id:Int, value:Boolean)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SettingsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

@@ -8,53 +8,67 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import io.realm.Realm
 import ru.ping.pda.Fragments.MapFragment
 import ru.ping.pda.Fragments.SettingsFragment
-class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener,
+
+class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentSettingsListener,
     View.OnClickListener {
 
+    //кнопки----------------------------------------------------------------------------------------
     lateinit var menu_Button: Button
     lateinit var record_Button: Button
     lateinit var mail_Button: Button
     lateinit var position_Button: Button
-
+    //----------------------------------------------------------------------------------------------
+    //виды запуска фрагмента------------------------------------------------------------------------
     val FRAGMENT_MAP_NEW = "mew"
     val FRAGMENT_MAP_REFRESH = "refresh"
-
-
+    //----------------------------------------------------------------------------------------------
     override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
+    override fun onFragmentSettings(id: Int, value: Boolean){
+    }
+    //----------------------------------------------------------------------------------------------
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //установка в полноэкранный режим---------------
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
+        //----------------------------------------------
         setContentView(R.layout.activity_main)
-        initElements()
-        runFragment(FRAGMENT_MAP_NEW)
+
+        initElements()//инициализация элементов
+        runFragment(FRAGMENT_MAP_NEW)//запуск фрагмета с картами
     }
 
-
+    //Обработка нажатия кнопок----------------------------------------------------------------------
     override fun onClick(v: View?) {
         when (v?.id) {
+            //нажатие кнопки меню
             R.id.id_button_PDA_MENU -> {
                 supportFragmentManager.beginTransaction().replace(R.id.id_Conteiner_Fragment,SettingsFragment()).commit()
             }
+            //нажатие кнопки определения позиции
             R.id.id_button_PDA_POSITION -> {
                 runFragment(FRAGMENT_MAP_REFRESH)
             }
         }
     }
 
-    //-------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
+    //здесь инициализируються компаненты главного экрана
     fun initElements() {
         org.osmdroid.config.Configuration.getInstance().load(
             applicationContext,
             PreferenceManager.getDefaultSharedPreferences(applicationContext)
         )
+        //Realm
+        Realm.init(this)
         //инициализация кнопок
         menu_Button = findViewById(R.id.id_button_PDA_MENU)
         record_Button = findViewById(R.id.id_button_PDA_QUEST)
@@ -66,7 +80,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         mail_Button.setOnClickListener(this)
         position_Button.setOnClickListener(this)
     }
-
+    //----------------------------------------------------------------------------------------------
+    //запуск фрагментов-----------------------------------------------------------------------------
     fun runFragment(run_parametr: String) {
         when (run_parametr) {
             FRAGMENT_MAP_NEW -> {
@@ -80,4 +95,5 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         }
 
     }
+    //----------------------------------------------------------------------------------------------
 }

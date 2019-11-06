@@ -34,8 +34,6 @@ var fistrun: Boolean = true
 
 class MapFragment : Fragment() {
 
-    //var track:GPS_Data_Track = GPS_Data_Track("",0.0,0.0)
-    // это сгенерированный код
     private var param_track: Boolean? = null
     private var param2: String? = null
     private var listener: MapFragment.OnFragmentInteractionListener? = null

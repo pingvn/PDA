@@ -8,14 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import org.osmdroid.api.IMapController
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
+import org.w3c.dom.Text
 import ru.ping.pda.R
 import ru.ping.pda.Utils.GPS
-
+import ru.ping.pda.Utils.SettingsPda
 
 
 /*
@@ -37,8 +39,14 @@ class MapFragment : Fragment() {
     private var param_track: Boolean? = null
     private var param2: String? = null
     private var listener: MapFragment.OnFragmentInteractionListener? = null
+    private lateinit var settings: SettingsPda
+    private lateinit var mMap: MapView
+    private lateinit var mapController: IMapController
+    private lateinit var marker: Marker
+    private lateinit var polylain: Polyline
+    lateinit var text_map_view: TextView
 
-    val gps=GPS()
+    val gps = GPS()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -53,34 +61,47 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val mView = inflater.inflate(R.layout.fragment_map, container, false)
+        initElements(mView)
         //------------------------------------------------------------------------------------------
-        val mMap: MapView = mView.findViewById(R.id.mapview)
-        mMap.setTileSource(TileSourceFactory.MAPNIK)
-        //------------------------------------------------------------------------------------------
-        val mapController: IMapController = mMap.controller
-        mapController.setZoom(16.5) // установка велечины зума при первоначальном запуске карты
-        //------------------------------------------------------------------------------------------
-        mMap.setMultiTouchControls(true) // управление зумом двумя пальцами
-        //------------------------------------------------------------------------------------------
-        var marker: Marker = Marker(mMap) // маркер точки на карте
-        //изменение иконк маркера-------------------------------------------------------------------
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            marker.icon = resources.getDrawable(R.drawable.ic_position_point, null)
-        }
-        //------------------------------------------------------------------------------------------
-        //Polyline----------------------------------------------------------------------------------
-        var polylain: Polyline = Polyline(mMap)
-        polylain.color=resources.getColor(R.color.colorLine)
-        //------------------------------------------------------------------------------------------
-        gps.getLocationUpdate(mView.context,mMap,marker,mapController,polylain)
-        if(fistrun){
+        gps.getLocationUpdate(
+            mView.context,
+            mMap,
+            marker,
+            polylain,
+            settings.getSetingsTreck(),
+            settings.getSettingsLine()
+        )
+        if (fistrun) {
             fistrun = false
             gps.centerMapView(mapController)
         }
         return mView
     }
 
-
+    fun initElements(view: View) {
+        settings = SettingsPda(view.context)
+        settings.init_storage()
+        text_map_view = view.findViewById(R.id.id_text_add_info_MapView)
+        text_map_view.text = "test"
+        //------------------------------------------------------------------------------------------
+        mMap = view.findViewById(R.id.mapview)
+        mMap.setTileSource(TileSourceFactory.MAPNIK)
+        //------------------------------------------------------------------------------------------
+        mapController = mMap.controller
+        mapController.setZoom(16.5) // установка велечины зума при первоначальном запуске карты
+        //------------------------------------------------------------------------------------------
+        mMap.setMultiTouchControls(true) // управление зумом двумя пальцами
+        //------------------------------------------------------------------------------------------
+        marker = Marker(mMap) // маркер точки на карте
+        //изменение иконк маркера-------------------------------------------------------------------
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            marker.icon = resources.getDrawable(R.drawable.ic_position_point, null)
+        }
+        //------------------------------------------------------------------------------------------
+        //Polyline----------------------------------------------------------------------------------
+        polylain = Polyline(mMap)
+        polylain.color = resources.getColor(R.color.colorLine)
+    }
 
 
     override fun onResume() {
@@ -90,7 +111,7 @@ class MapFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-       gps.stopLocationUpdate()
+        gps.stopLocationUpdate()
     }
 
     override fun onAttach(context: Context) {

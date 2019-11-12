@@ -9,8 +9,10 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import ru.ping.pda.Fragments.MapFragment
 import ru.ping.pda.Fragments.SettingsFragment
+import ru.ping.pda.Utils.RealmUtils
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentSettingsListener,
     View.OnClickListener {
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     //виды запуска фрагмента------------------------------------------------------------------------
     val FRAGMENT_MAP_NEW = "mew"
     val FRAGMENT_MAP_REFRESH = "refresh"
+    //название базы Realm
+    val NAME_REALM_BASE = "pda_db"
     //----------------------------------------------------------------------------------------------
     override fun onFragmentInteraction(uri: Uri) {
     }
@@ -63,12 +67,17 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     //----------------------------------------------------------------------------------------------
     //здесь инициализируються компаненты главного экрана
     fun initElements() {
+        //------------------------------------------------------------------------------------------
+        //инициализация Realm
+        Realm.init(this)
+        //создание конфига Realm
+        val configRealm = RealmConfiguration.Builder().name(NAME_REALM_BASE).build()
+        Realm.setDefaultConfiguration(configRealm)
+        //------------------------------------------------------------------------------------------
         org.osmdroid.config.Configuration.getInstance().load(
             applicationContext,
             PreferenceManager.getDefaultSharedPreferences(applicationContext)
         )
-        //Realm
-        Realm.init(this)
         //инициализация кнопок
         menu_Button = findViewById(R.id.id_button_PDA_MENU)
         record_Button = findViewById(R.id.id_button_PDA_QUEST)

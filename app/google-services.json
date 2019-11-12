@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "862311258119",
-    "firebase_url": "https://pdafirebaseproject-81d0b.firebaseio.com",
-    "project_id": "pdafirebaseproject-81d0b",
-    "storage_bucket": "pdafirebaseproject-81d0b.appspot.com"
+    "project_number": "812006955816",
+    "firebase_url": "https://pdazarya-1568793164553.firebaseio.com",
+    "project_id": "pdazarya-1568793164553",
+    "storage_bucket": "pdazarya-1568793164553.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:862311258119:android:0077fb564ba825423ef2a2",
+        "mobilesdk_app_id": "1:812006955816:android:455fb489d808a66e678e1d",
         "android_client_info": {
           "package_name": "ru.ping.pda"
         }
       },
       "oauth_client": [
         {
-          "client_id": "862311258119-fbhrvfj1d1a581bi6ue2kmdb8ff7q4p2.apps.googleusercontent.com",
+          "client_id": "812006955816-8g8oendn1hbstkhkgm2gtrd6pper81bc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "ru.ping.pda",
-            "certificate_hash": "0653f7433794387a8742cd1829563719dba46564"
+            "certificate_hash": "266a79977acc6e830de5248f8d2438cc588a1da6"
           }
         },
         {
-          "client_id": "862311258119-9r33tmonem58n9630s8alebu910tfpj3.apps.googleusercontent.com",
+          "client_id": "812006955816-j3akjkjugut5gifv8svqgejqlhookj7k.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAL-VQRxJVoDhtY6e8VFWhUHrtZFED-OjE"
+          "current_key": "AIzaSyDuUL1I7C1eNesJY49jjCAb0kqVu7-4tKQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "862311258119-9r33tmonem58n9630s8alebu910tfpj3.apps.googleusercontent.com",
+              "client_id": "812006955816-j3akjkjugut5gifv8svqgejqlhookj7k.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -8,6 +8,7 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import com.google.firebase.database.FirebaseDatabase
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import ru.ping.pda.Fragments.MapFragment
@@ -88,6 +89,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         record_Button.setOnClickListener(this)
         mail_Button.setOnClickListener(this)
         position_Button.setOnClickListener(this)
+
     }
     //----------------------------------------------------------------------------------------------
     //запуск фрагментов-----------------------------------------------------------------------------

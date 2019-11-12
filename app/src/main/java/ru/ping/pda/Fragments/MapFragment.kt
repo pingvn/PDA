@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.firebase.database.FirebaseDatabase
 import org.osmdroid.api.IMapController
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
@@ -101,6 +102,11 @@ class MapFragment : Fragment() {
         //Polyline----------------------------------------------------------------------------------
         polylain = Polyline(mMap)
         polylain.color = resources.getColor(R.color.colorLine)
+
+        var db: FirebaseDatabase = FirebaseDatabase.getInstance()
+        var ref=db.getReference("pda")
+
+        ref.setValue(settings.getSettingsPDA()+"|"+settings.getSettingsCommand())
     }
 
 

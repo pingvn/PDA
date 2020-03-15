@@ -16,6 +16,10 @@ class SettingsPda(context: Context) {
     val PDA_ID = "id_pda"
     //название параметра для хранения индентефикатора комманды, по умолчанию 0 (одиночка)
     val COMMAND_ID = "command_id"
+    //название настройки сохранения отображения записанного трека
+    val SHOW_TRECK = "show_track"
+    //параметр сохраненной даты для отоброения трека
+    val SELECTED_TRACK_DATA = "treck_data"
     //----------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------
     var sharedPreferences: SharedPreferences? = null
@@ -42,6 +46,18 @@ class SettingsPda(context: Context) {
         editor?.commit() // внести изменение в хранилище
     }
     //----------------------------------------------------------------------------------------------
+    //сохранение настройки отображения сохраненного трека
+    fun saveShowTrack(show:Boolean){
+        if(sharedPreferences == null) init_storage() //если не проинициализированно то проинициализировать
+        editor?.putBoolean(SHOW_TRECK,show)
+        editor?.commit()
+    }
+    //сохранение данных о выбранной дате трека
+    fun savedataTreck(dataTreck:String){
+        if (sharedPreferences == null) init_storage()
+        editor?.putString(SELECTED_TRACK_DATA, dataTreck)
+        editor?.commit()
+    }
     //--сохранение данных о PDA --------------------------------------------------------------------
     //предположительно будет редко изменяться при первом запуске или при смене комманды
     fun savePDASettings(id_PDA: String, command_id:String){
@@ -66,8 +82,18 @@ class SettingsPda(context: Context) {
         val pref = context.getSharedPreferences(STORAGE_NAME,0)
         return pref.getString(PDA_ID,"007")
     }
+    //данные о команде
     fun getSettingsCommand():String?{
         val pref = context.getSharedPreferences(STORAGE_NAME,0)
         return pref.getString(COMMAND_ID,"0")
+    }
+    //показывать сохраненный трек
+    fun getSettingsShowTrack():Boolean{
+        val pref=context.getSharedPreferences(STORAGE_NAME,0)
+        return  pref.getBoolean(SHOW_TRECK,false)
+    }
+    fun getSettingsDataTreck(): String? {
+        val pref = context.getSharedPreferences(STORAGE_NAME,0)
+        return pref.getString(SELECTED_TRACK_DATA,"0")
     }
 }

@@ -8,12 +8,10 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
-import com.google.firebase.database.FirebaseDatabase
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import ru.ping.pda.Fragments.MapFragment
 import ru.ping.pda.Fragments.SettingsFragment
-import ru.ping.pda.Utils.RealmUtils
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentSettingsListener,
     View.OnClickListener {

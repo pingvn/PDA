@@ -1,6 +1,7 @@
 package ru.ping.pda.Fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -19,6 +20,7 @@ import org.w3c.dom.Text
 import ru.ping.pda.R
 import ru.ping.pda.Utils.GPS
 import ru.ping.pda.Utils.SettingsPda
+import ru.ping.pda.Utils.VisualTreck
 
 
 /*
@@ -45,6 +47,7 @@ class MapFragment : Fragment() {
     private lateinit var mapController: IMapController
     private lateinit var marker: Marker
     private lateinit var polylain: Polyline
+    private lateinit var polylineSaved:Polyline
     lateinit var text_map_view: TextView
 
     val gps = GPS()
@@ -102,11 +105,23 @@ class MapFragment : Fragment() {
         //Polyline----------------------------------------------------------------------------------
         polylain = Polyline(mMap)
         polylain.color = resources.getColor(R.color.colorLine)
-
+        if (settings.getSettingsShowTrack())
+            drawTreck(mMap)
+        //------------------------------------------------------------------------------------------
         var db: FirebaseDatabase = FirebaseDatabase.getInstance()
         var ref=db.getReference("pda")
 
         ref.setValue(settings.getSettingsPDA()+"|"+settings.getSettingsCommand())
+    }
+
+    fun drawTreck(map:MapView){
+        polylineSaved = Polyline(map)
+        polylineSaved.color=Color.CYAN
+        var savedTrack = VisualTreck()
+        var listDay=savedTrack.getData()
+        polylineSaved.setPoints(settings.getSettingsDataTreck()?.let { savedTrack.getPoints(it) })
+        map.overlays.add(polylineSaved)
+        map.invalidate()
     }
 
 

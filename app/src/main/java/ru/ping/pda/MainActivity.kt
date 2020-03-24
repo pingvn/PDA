@@ -11,15 +11,15 @@ import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.database.FirebaseDatabase
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import ru.ping.pda.Data_Model.Pda_info
 import ru.ping.pda.Fragments.MapFragment
 import ru.ping.pda.Fragments.SettingsFragment
-import java.util.jar.Manifest
-import javax.net.ssl.ManagerFactoryParameters
+import ru.ping.pda.Utils.SettingsPda
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
     SettingsFragment.OnFragmentSettingsListener,
@@ -57,9 +57,11 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         )
         //----------------------------------------------
         check_permissions()
+        check_Pda_ID()
+        val save = SettingsPda(this)
+        save.savePda_id("1111")
         //----------------------------------------------
         setContentView(R.layout.activity_main)
-
         initElements()//инициализация элементов
         runFragment(FRAGMENT_MAP_NEW)//запуск фрагмета с картами
     }
@@ -77,19 +79,15 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 runFragment(FRAGMENT_MAP_REFRESH)
             }
         }
+
     }
 
     //----------------------------------------------------------------------------------------------
     //функция проверки разрешений
     fun check_permissions() {
-        var param_add_string = "Для работы приложения необходимо включить разрешения."
-
+        // var param_add_string = "Для работы приложения необходимо включить разрешения."
         var check_gps_1 = false
-        var check_gps_2 = false
-        var check_wifi = false
         var check_write_storage = false
-        var check_internet = false
-        var check_networck = false
         var list_permission_guery = ArrayList<String>()
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -100,42 +98,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         } else {
             check_gps_1 = true
         }
-        if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            list_permission_guery.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
-        } else {
-            check_gps_2 = true
-        }
-        if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_WIFI_STATE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            list_permission_guery.add(android.Manifest.permission.ACCESS_WIFI_STATE)
-        } else {
-            check_wifi = true
-        }
-        if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_NETWORK_STATE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            list_permission_guery.add(android.Manifest.permission.ACCESS_NETWORK_STATE)
-        } else {
-            check_networck = true
-        }
-        if (ContextCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.INTERNET
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            list_permission_guery.add(android.Manifest.permission.INTERNET)
-        } else {
-            check_internet = true
-        }
+
         if (ContextCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -145,12 +108,11 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         } else {
             check_write_storage = true;
         }
-        //Toast.makeText(this,param_add_string,Toast.LENGTH_LONG).show()
-        if (!check_gps_1 and !check_write_storage ) {
+
+        if (!check_gps_1 and !check_write_storage) {
             openApp()
         }
 
-       // openApp()
     }
 
     fun openApp() {
@@ -158,20 +120,70 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Uri.parse("package:" + getPackageName())
         )
-       // Toast.makeText(this,"необходимо дать разрешения",Toast.LENGTH_LONG).show()
         startActivityForResult(appSettings, PERMISSION_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
-
             return;
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    fun check_Pda_ID(){
+        val settingsPda=SettingsPda(this)
+      //  Toast.makeText(this,settingsPda.getSettingsPDA(),Toast.LENGTH_LONG).show()
+        if(settingsPda.getSettingsPDA().equals("007")){
+            var pda_id = Random.nextLong(1,2147483647)
+            //--------------------------------------------------------------------------------------
+            var fairebaseDB=FirebaseDatabase.getInstance()
+            var ref=fairebaseDB.getReference("pda_info")
+            var pda_info=Pda_info(pda_id.toString(),"user","0")
+            ref.child(pda_id.toString()).setValue(pda_info)
+
+            settingsPda.init_storage()
+            settingsPda.savePda_id(pda_id.toString())
+        }
+    }
+/*
+    fun check_Pda_ID() {
+
+        val settings = SettingsPda(this)
+        val user = settings.getSettingsUser()
+        val comand = settings.getSettingsCommand()
+        val id = settings.getSettingsPDA()
+        if (id.equals("007")) {
+            var pda_id = Random.nextInt(1, 1000000)
+            var readdb = FirebaseDatabase.getInstance().getReference()
+            readdb.child("pda_id").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    for (ds: DataSnapshot in p0.children) {
+                        val pda = ds.getValue(Pda_info::class.java)
+                        if (pda?.pda_id.equals(pda_id.toString())) {
+                            pda_id = Random.nextInt(1, 1000000)
+                        }
+                    }
+                    var db: FirebaseDatabase = FirebaseDatabase.getInstance()
+                    var ref = db.getReference("pda_id")
+                    var id = Pda_info(pda_id.toString(), "007", "0")
+                    ref.child(id.pda_id.toString()).setValue(id)
+
+                }
+            })
+
+
+        }
+        else{
+        }
+
+
+    }
+*/
     //----------------------------------------------------------------------------------------------
-    //здесь инициализируються компаненты главного экрана
+//здесь инициализируються компаненты главного экрана
     fun initElements() {
         //------------------------------------------------------------------------------------------
         //инициализация Realm
@@ -196,9 +208,11 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         position_Button.setOnClickListener(this)
 
     }
+//----------------------------------------------------------------------------------------------
+//проверка и генерация номера
 
     //----------------------------------------------------------------------------------------------
-    //запуск фрагментов-----------------------------------------------------------------------------
+//запуск фрагментов-----------------------------------------------------------------------------
     fun runFragment(run_parametr: String) {
         when (run_parametr) {
             FRAGMENT_MAP_NEW -> {
@@ -212,5 +226,5 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         }
 
     }
-    //----------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
 }

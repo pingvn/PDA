@@ -6,16 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
+import androidx.fragment.app.FragmentManager
 import ru.ping.pda.R
+import ru.ping.pda.Utils.DialogAddUser
 import ru.ping.pda.Utils.SettingsPda
 import ru.ping.pda.Utils.VisualTreck
 
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : Fragment(),View.OnClickListener {
     private var listener: OnFragmentSettingsListener? = null
     var chexBoxTreck: CheckBox? = null
     var checkBoxLine: CheckBox? = null
@@ -24,7 +23,10 @@ class SettingsFragment : Fragment() {
     lateinit var text_COMMAND_ID: TextView
     lateinit var settings: SettingsPda
     lateinit var spinner: Spinner
-    var list =ArrayList<String>()
+    lateinit var buttonAddUser: Button
+    lateinit var buttonCreateCommand: Button
+    lateinit var buttonAddToCommand: Button
+    var list = ArrayList<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,12 +47,16 @@ class SettingsFragment : Fragment() {
         settings = SettingsPda(view.context) //инициализация класса для сохранения настроек
         settings.init_storage() // -----------------------------------------------------------------
         spinner = view.findViewById(R.id.id_spinner_chuse_data)
-        spinner.isEnabled=settings.getSettingsShowTrack()
+        spinner.isEnabled = settings.getSettingsShowTrack()
         var trackData = VisualTreck()
-        val spinerAdapter = ArrayAdapter(view.context, android.R.layout.simple_spinner_item,trackData.getData().toTypedArray())
+        val spinerAdapter = ArrayAdapter(
+            view.context,
+            android.R.layout.simple_spinner_item,
+            trackData.getData().toTypedArray()
+        )
         list = trackData.getData() as ArrayList<String>
         spinerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter=spinerAdapter
+        spinner.adapter = spinerAdapter
         //инициализация chaexkBox и установка их в сохраненное положение
         checkBoxLine = view.findViewById(R.id.id_Settings_check_line)
         checkBoxLine?.isChecked = settings.getSettingsLine()
@@ -61,6 +67,12 @@ class SettingsFragment : Fragment() {
         checkBoxShowTreck?.setOnCheckedChangeListener { buttonView, isChecked ->
             spinner.isEnabled = isChecked
         }
+        //инициализация кнопок
+        buttonAddUser=view.findViewById(R.id.id_settings_button_User_name)
+        buttonCreateCommand=view.findViewById(R.id.id_settings_button_create_command)
+        buttonAddToCommand=view.findViewById(R.id.id_settings_button_add_to_command)
+        buttonCreateCommand.setOnClickListener(this)
+        buttonAddUser.setOnClickListener(this)
         //иниациализация текста и установка значений из сохренненого
         text_PDA_ID = view.findViewById(R.id.id_settings_pda_id_text)
         text_COMMAND_ID = view.findViewById(R.id.id_settings_command_id_text)
@@ -86,13 +98,36 @@ class SettingsFragment : Fragment() {
         checkBoxLine?.isChecked?.let { settings.saveSettingsLine(it) }
         chexBoxTreck?.isChecked?.let { settings.saveSettingsTrack(it) }
         checkBoxShowTreck?.isChecked?.let { settings.saveShowTrack(it) }
-        settings.savedataTreck(list.get(spinner.selectedItemPosition))
+        val position = spinner.selectedItemPosition
+        if ((position >= 0) and (position < list.size)) { //проверка чтобы не вылезать за длину списка.
+            settings.savedataTreck(list.get(spinner.selectedItemPosition))
+        }
+
     }
 
 
     interface OnFragmentSettingsListener {
         // TODO: Update argument type and name
         fun onFragmentSettings(id: Int, value: Boolean)
+    }
+    //обработка нажатия на кнопку
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.id_settings_button_User_name->{
+                val dialogUser=DialogAddUser()
+                val dialogManager = fragmentManager
+                if (dialogManager != null) {
+                    dialogUser.show(dialogManager,"test")
+                }
+
+            }
+            R.id.id_settings_button_create_command->{
+
+            }
+            R.id.id_settings_button_add_to_command->{
+
+            }
+        }
     }
 
 }

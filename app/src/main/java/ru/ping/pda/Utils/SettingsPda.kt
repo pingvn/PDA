@@ -20,6 +20,8 @@ class SettingsPda(context: Context) {
     val SHOW_TRECK = "show_track"
     //параметр сохраненной даты для отоброения трека
     val SELECTED_TRACK_DATA = "treck_data"
+
+    val USAER_NAME="user"
     //----------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------
     var sharedPreferences: SharedPreferences? = null
@@ -37,32 +39,50 @@ class SettingsPda(context: Context) {
     fun saveSettingsTrack(track:Boolean){
         if(sharedPreferences == null) init_storage() //если не проинициализированно
         editor?.putBoolean(TRACK_RECORD,track) //запись значения трека
-        editor?.commit() // внести изменение в хранилище
+        editor?.apply() // внести изменение в хранилище
     }
     //----------------------------------------------------------------------------------------------
     fun saveSettingsLine(line:Boolean){
         if(sharedPreferences == null) init_storage() //если не проинициализированно
         editor?.putBoolean(TRECK_LINE,line) //запись значения линии
-        editor?.commit() // внести изменение в хранилище
+        editor?.apply() // внести изменение в хранилище
     }
     //----------------------------------------------------------------------------------------------
     //сохранение настройки отображения сохраненного трека
     fun saveShowTrack(show:Boolean){
         if(sharedPreferences == null) init_storage() //если не проинициализированно то проинициализировать
         editor?.putBoolean(SHOW_TRECK,show)
-        editor?.commit()
+        editor?.apply()
     }
     //сохранение данных о выбранной дате трека
     fun savedataTreck(dataTreck:String){
         if (sharedPreferences == null) init_storage()
         editor?.putString(SELECTED_TRACK_DATA, dataTreck)
-        editor?.commit()
+        editor?.apply()
     }
     //--сохранение данных о PDA --------------------------------------------------------------------
     //предположительно будет редко изменяться при первом запуске или при смене комманды
-    fun savePDASettings(id_PDA: String, command_id:String){
+    /*
+    fun savePDASettings(id_PDA: String, user:String ,command_id:String){
         if(sharedPreferences!=null)init_storage() //если хранилище не инициализированно
         editor?.putString(PDA_ID,id_PDA) //внести значение pda
+        editor?.putString(USAER_NAME,user)
+        editor?.putString(COMMAND_ID,command_id) //внести значение комманды
+        editor?.commit()//записать в хранилище
+    }
+    */
+    fun savePda_id(id_PDA:String){
+        if(sharedPreferences!=null)init_storage() //если хранилище не инициализированно
+        editor?.putString(PDA_ID,id_PDA) //внести значение pda
+        editor?.apply()
+    }
+    fun savePda_User(user:String){
+        if(sharedPreferences!=null)init_storage() //если хранилище не инициализированно
+        editor?.putString(USAER_NAME,user)
+        editor?.apply()
+    }
+    fun savePda_command(command_id:String){
+        if(sharedPreferences!=null)init_storage() //если хранилище не инициализированно
         editor?.putString(COMMAND_ID,command_id) //внести значение комманды
         editor?.apply()//записать в хранилище
     }
@@ -95,5 +115,10 @@ class SettingsPda(context: Context) {
     fun getSettingsDataTreck(): String? {
         val pref = context.getSharedPreferences(STORAGE_NAME,0)
         return pref.getString(SELECTED_TRACK_DATA,"0")
+    }
+
+    fun getSettingsUser(): String? {
+        val pref = context.getSharedPreferences(STORAGE_NAME,0)
+        return pref.getString(USAER_NAME,"0")
     }
 }

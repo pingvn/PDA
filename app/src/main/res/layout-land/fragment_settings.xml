@@ -42,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="показывать трек" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -63,10 +64,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2">
+
         <Spinner
             android:id="@+id/id_spinner_chuse_data"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -75,14 +77,36 @@
         android:layout_weight="2"
         android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/id_settings_pda_id_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/id_settings_command_id_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/id_settings_pda_id_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/id_settings_command_id_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/id_settings_button_User_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/Settings_Button_Add_User" />
+
+        <Button
+            android:id="@+id/id_settings_button_create_command"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/Settings_Button_Create_Command" />
+
+        <Button
+            android:id="@+id/id_settings_button_add_to_command"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/Settings_Button_Add_To_Command" />
 
     </LinearLayout>
 </LinearLayout>

@@ -17,10 +17,12 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import org.w3c.dom.Text
+import ru.ping.pda.Data_Model.Pda_info
 import ru.ping.pda.R
 import ru.ping.pda.Utils.GPS
 import ru.ping.pda.Utils.SettingsPda
 import ru.ping.pda.Utils.VisualTreck
+import kotlin.random.Random
 
 
 /*
@@ -108,10 +110,12 @@ class MapFragment : Fragment() {
         if (settings.getSettingsShowTrack())
             drawTreck(mMap)
         //------------------------------------------------------------------------------------------
-        var db: FirebaseDatabase = FirebaseDatabase.getInstance()
-        var ref=db.getReference("pda")
-
-        ref.setValue(settings.getSettingsPDA()+"|"+settings.getSettingsCommand())
+        //подключение к бд и запись значения
+        //var db: FirebaseDatabase = FirebaseDatabase.getInstance()
+        //var ref=db.getReference("pda")
+        //ref.setValue(settings.getSettingsPDA()+"|"+settings.getSettingsCommand())
+        //ref.child("dd").setValue("01011"+"|"+settings.getSettingsCommand())
+        //check_Pda_ID(view)
     }
 
     fun drawTreck(map:MapView){
@@ -123,6 +127,8 @@ class MapFragment : Fragment() {
         map.overlays.add(polylineSaved)
         map.invalidate()
     }
+
+
 
 
     override fun onResume() {

@@ -10,4 +10,5 @@
     <string name="Dialog_add_USER_Head">Добавить имя пользователя</string>
     <string name="Dialog_addUser_Button_add">Создать</string>
     <string name="Dialog_addUser_Button_cancel">Отмена</string>
+    <string name="Dialog_Create_Command">Создать комманду</string>
 </resources>

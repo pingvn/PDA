@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.FragmentManager
 import ru.ping.pda.R
 import ru.ping.pda.Utils.DialogAddUser
 import ru.ping.pda.Utils.SettingsPda
@@ -79,7 +78,8 @@ class SettingsFragment : Fragment(),View.OnClickListener {
         text_PDA_ID.text =
             resources.getString(R.string.pda_ip_text_forvard) + " " + settings.getSettingsPDA()
         text_COMMAND_ID.text =
-            resources.getString(R.string.command_id_text_forvard) + " " + settings.getSettingsCommand()
+            resources.getString(R.string.command_id_text_forvard) + " " +settings.getSettingsCommand_Name()+"\n"+settings.getSettingsCommand_pin()+"  "+settings.getSettingsCommand_id()
+
     }
     //----------------------------------------------------------------------------------------------
 

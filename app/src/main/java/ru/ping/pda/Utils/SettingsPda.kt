@@ -20,8 +20,10 @@ class SettingsPda(context: Context) {
     val SHOW_TRECK = "show_track"
     //параметр сохраненной даты для отоброения трека
     val SELECTED_TRACK_DATA = "treck_data"
-
+    val COMMAND_NAME = "command_name"
     val USAER_NAME="user"
+
+    val COMMAND_PIN="c_pin"
     //----------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------
     var sharedPreferences: SharedPreferences? = null
@@ -86,6 +88,17 @@ class SettingsPda(context: Context) {
         editor?.putString(COMMAND_ID,command_id) //внести значение комманды
         editor?.apply()//записать в хранилище
     }
+    fun saveCommandPin(command_pin:String){
+        if(sharedPreferences!=null)init_storage() //если хранилище не инициализированно
+        editor?.putString(COMMAND_PIN,command_pin) //внести значение комманды
+        editor?.apply()//записать в хранилище
+    }
+
+    fun saveCommandName(command_Name:String){
+        if(sharedPreferences!=null)init_storage() //если хранилище не инициализированно
+        editor?.putString(COMMAND_NAME,command_Name) //внести значение комманды
+        editor?.apply()//записать в хранилище
+    }
     //----------------------------------------------------------------------------------------------
     //--получение значений изхранилища--------------------------------------------------------------
     //получения состояния чек боксов трека и линии--------------------------------------------------
@@ -103,9 +116,9 @@ class SettingsPda(context: Context) {
         return pref.getString(PDA_ID,"007")
     }
     //данные о команде
-    fun getSettingsCommand():String?{
+    fun getSettingsCommand_Name():String?{
         val pref = context.getSharedPreferences(STORAGE_NAME,0)
-        return pref.getString(COMMAND_ID,"0")
+        return pref.getString(COMMAND_NAME,"0")
     }
     //показывать сохраненный трек
     fun getSettingsShowTrack():Boolean{
@@ -120,5 +133,15 @@ class SettingsPda(context: Context) {
     fun getSettingsUser(): String? {
         val pref = context.getSharedPreferences(STORAGE_NAME,0)
         return pref.getString(USAER_NAME,"0")
+    }
+
+    fun getSettingsCommand_id():String?{
+        val pref = context.getSharedPreferences(STORAGE_NAME,0)
+        return pref.getString(COMMAND_ID,"00000000")
+    }
+
+    fun getSettingsCommand_pin():String?{
+        val pref = context.getSharedPreferences(STORAGE_NAME,0)
+        return pref.getString(COMMAND_PIN,"000000")
     }
 }

@@ -11,4 +11,7 @@
     <string name="Dialog_addUser_Button_add">Создать</string>
     <string name="Dialog_addUser_Button_cancel">Отмена</string>
     <string name="Dialog_Create_Command">Создать комманду</string>
+    <string name="Delete_Command_Text">Удалить комманду?</string>
+    <string name="live_command">Покинуть команду</string>
+    <string name="message_command_create">Вы состоите в комманде. Для создания команды Вам необходимо покинуть комманду.</string>
 </resources>

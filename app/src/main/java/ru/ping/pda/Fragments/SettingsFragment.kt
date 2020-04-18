@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import ru.ping.pda.R
 import ru.ping.pda.Utils.DialogAddUser
+import ru.ping.pda.Utils.DialogCreateCommand
 import ru.ping.pda.Utils.SettingsPda
 import ru.ping.pda.Utils.VisualTreck
 
@@ -122,7 +123,11 @@ class SettingsFragment : Fragment(),View.OnClickListener {
 
             }
             R.id.id_settings_button_create_command->{
-
+                    val dialogCommand=DialogCreateCommand()
+                    val dialogManager= fragmentManager
+                    if(dialogManager!= null){
+                        dialogCommand.show(dialogManager,"Command")
+                    }
             }
             R.id.id_settings_button_add_to_command->{
 

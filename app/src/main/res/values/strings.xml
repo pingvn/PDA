@@ -14,4 +14,9 @@
     <string name="Delete_Command_Text">Удалить комманду?</string>
     <string name="live_command">Покинуть команду</string>
     <string name="message_command_create">Вы состоите в комманде. Для создания команды Вам необходимо покинуть комманду.</string>
+    <string name="pin_command">Пин команды</string>
+    <string name="id_command">id команды</string>
+    <string name="get_out_command">Покинуть команду</string>
+    <string name="delete">Удвлить</string>
+    <string name="cancel">Отмена</string>
 </resources>

@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
     //----------------------------------------------------------------------------------------------
 //запуск фрагментов-----------------------------------------------------------------------------
-    fun runFragment(run_parametr: String) {
+    public fun runFragment(run_parametr: String) {
         when (run_parametr) {
             FRAGMENT_MAP_NEW -> {
                 supportFragmentManager.beginTransaction()

@@ -7,11 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import ru.ping.pda.MainActivity
 import ru.ping.pda.R
-import ru.ping.pda.Utils.DialogAddUser
-import ru.ping.pda.Utils.DialogCreateCommand
-import ru.ping.pda.Utils.SettingsPda
-import ru.ping.pda.Utils.VisualTreck
+import ru.ping.pda.Utils.*
 
 
 class SettingsFragment : Fragment(),View.OnClickListener {
@@ -71,8 +69,23 @@ class SettingsFragment : Fragment(),View.OnClickListener {
         buttonAddUser=view.findViewById(R.id.id_settings_button_User_name)
         buttonCreateCommand=view.findViewById(R.id.id_settings_button_create_command)
         buttonAddToCommand=view.findViewById(R.id.id_settings_button_add_to_command)
+        if((!settings.getSettingsCommand_id().equals("00000000"))&&settings.getSettingsCommand_owner().equals(settings.getSettingsPDA())){
+            buttonCreateCommand.text= getString(R.string.Delete_Command_Text)
+            buttonAddToCommand.isEnabled=false
+        }else{
+            buttonAddToCommand.isEnabled=true
+            if(!settings.getSettingsCommand_id().equals("00000000")){
+                buttonCreateCommand.isEnabled=false
+                buttonAddToCommand.text=getText(R.string.get_out_command)
+            }else{
+                buttonCreateCommand.isEnabled=true
+            }
+
+        }
+
         buttonCreateCommand.setOnClickListener(this)
         buttonAddUser.setOnClickListener(this)
+        buttonAddToCommand.setOnClickListener(this)
         //иниациализация текста и установка значений из сохренненого
         text_PDA_ID = view.findViewById(R.id.id_settings_pda_id_text)
         text_COMMAND_ID = view.findViewById(R.id.id_settings_command_id_text)
@@ -123,13 +136,38 @@ class SettingsFragment : Fragment(),View.OnClickListener {
 
             }
             R.id.id_settings_button_create_command->{
+                if((!settings.getSettingsCommand_id().equals("00000000"))&&settings.getSettingsCommand_owner().equals(settings.getSettingsPDA())){
+                    val dialogDeleteCommand=DeleteCommand()
+                    val dialogManager=fragmentManager
+                    if(dialogManager!=null){
+                        dialogDeleteCommand.show(dialogManager,"command")
+                    }
+
+                }else{
                     val dialogCommand=DialogCreateCommand()
                     val dialogManager= fragmentManager
                     if(dialogManager!= null){
                         dialogCommand.show(dialogManager,"Command")
                     }
+                }
+
+
             }
-            R.id.id_settings_button_add_to_command->{
+            R.id.id_settings_button_add_to_command-> {
+                if(!settings.getSettingsCommand_id().equals("00000000")) {
+                    val dialogCommand = GetOutCommand()
+                    val dialogManager = fragmentManager
+                    if (dialogManager != null) {
+                        dialogCommand.show(dialogManager, "Command")
+                    }
+                }else{
+                    val dialogCommand = AddCommad()
+                    val dialogManager = fragmentManager
+                    if (dialogManager != null) {
+                        dialogCommand.show(dialogManager, "Command")
+                    }
+                }
+
 
             }
         }

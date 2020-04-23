@@ -22,6 +22,7 @@ class SettingsPda(context: Context) {
     val SELECTED_TRACK_DATA = "treck_data"
     val COMMAND_NAME = "command_name"
     val USAER_NAME="user"
+    val COMMAND_OWNER="command_owner"
 
     val COMMAND_PIN="c_pin"
     //----------------------------------------------------------------------------------------------
@@ -99,6 +100,11 @@ class SettingsPda(context: Context) {
         editor?.putString(COMMAND_NAME,command_Name) //внести значение комманды
         editor?.apply()//записать в хранилище
     }
+    fun saveCommandOwner(command_Owner:String){
+        if(sharedPreferences!=null)init_storage() //если хранилище не инициализированно
+        editor?.putString(COMMAND_OWNER,command_Owner) //внести значение комманды
+        editor?.apply()//записать в хранилище
+    }
     //----------------------------------------------------------------------------------------------
     //--получение значений изхранилища--------------------------------------------------------------
     //получения состояния чек боксов трека и линии--------------------------------------------------
@@ -138,6 +144,10 @@ class SettingsPda(context: Context) {
     fun getSettingsCommand_id():String?{
         val pref = context.getSharedPreferences(STORAGE_NAME,0)
         return pref.getString(COMMAND_ID,"00000000")
+    }
+    fun getSettingsCommand_owner():String?{
+        val pref = context.getSharedPreferences(STORAGE_NAME,0)
+        return pref.getString(COMMAND_OWNER,"000000000")
     }
 
     fun getSettingsCommand_pin():String?{

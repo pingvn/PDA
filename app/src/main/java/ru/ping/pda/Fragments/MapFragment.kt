@@ -1,6 +1,7 @@
 package ru.ping.pda.Fragments
 
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,15 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.firebase.database.FirebaseDatabase
 import org.osmdroid.api.IMapController
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import org.w3c.dom.Text
+import ru.ping.pda.Data_Model.Pda_info
 import ru.ping.pda.R
 import ru.ping.pda.Utils.GPS
 import ru.ping.pda.Utils.SettingsPda
+import ru.ping.pda.Utils.VisualTreck
+import kotlin.random.Random
 
 
 /*
@@ -44,6 +49,7 @@ class MapFragment : Fragment() {
     private lateinit var mapController: IMapController
     private lateinit var marker: Marker
     private lateinit var polylain: Polyline
+    private lateinit var polylineSaved:Polyline
     lateinit var text_map_view: TextView
 
     val gps = GPS()
@@ -101,7 +107,28 @@ class MapFragment : Fragment() {
         //Polyline----------------------------------------------------------------------------------
         polylain = Polyline(mMap)
         polylain.color = resources.getColor(R.color.colorLine)
+        if (settings.getSettingsShowTrack())
+            drawTreck(mMap)
+        //------------------------------------------------------------------------------------------
+        //подключение к бд и запись значения
+        //var db: FirebaseDatabase = FirebaseDatabase.getInstance()
+        //var ref=db.getReference("pda")
+        //ref.setValue(settings.getSettingsPDA()+"|"+settings.getSettingsCommand())
+        //ref.child("dd").setValue("01011"+"|"+settings.getSettingsCommand())
+        //check_Pda_ID(view)
     }
+
+    fun drawTreck(map:MapView){
+        polylineSaved = Polyline(map)
+        polylineSaved.color=Color.CYAN
+        var savedTrack = VisualTreck()
+        var listDay=savedTrack.getData()
+        polylineSaved.setPoints(settings.getSettingsDataTreck()?.let { savedTrack.getPoints(it) })
+        map.overlays.add(polylineSaved)
+        map.invalidate()
+    }
+
+
 
 
     override fun onResume() {

@@ -1,8 +1,22 @@
 <resources>
     <string name="app_name">PDA</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pda_ip_text_forvard">Уникальнй номер: </string>
     <string name="command_id_text_forvard">Id Комманды: </string>
+    <string name="Settings_Button_Add_User">Добавить Имя</string>
+    <string name="Settings_Button_Create_Command">Создать Команду</string>
+    <string name="Settings_Button_Add_To_Command">Вступить в команду</string>
+    <string name="Dialog_add_USER_Head">Добавить имя пользователя</string>
+    <string name="Dialog_addUser_Button_add">Создать</string>
+    <string name="Dialog_addUser_Button_cancel">Отмена</string>
+    <string name="Dialog_Create_Command">Создать комманду</string>
+    <string name="Delete_Command_Text">Удалить комманду?</string>
+    <string name="live_command">Покинуть команду</string>
+    <string name="message_command_create">Вы состоите в комманде. Для создания команды Вам необходимо покинуть комманду.</string>
+    <string name="pin_command">Пин команды</string>
+    <string name="id_command">id команды</string>
+    <string name="get_out_command">Покинуть команду</string>
+    <string name="delete">Удвлить</string>
+    <string name="cancel">Отмена</string>
 </resources>

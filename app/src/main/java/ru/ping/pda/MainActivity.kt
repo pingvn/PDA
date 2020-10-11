@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         //установка в полноэкранный режим---------------
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         val save = SettingsPda(this)
         save.savePda_id("1111")
         //----------------------------------------------
-        setContentView(R.layout.activity_main)
+       // setContentView(R.layout.activity_main)
         initElements()//инициализация элементов
         runFragment(FRAGMENT_MAP_NEW)//запуск фрагмета с картами
     }

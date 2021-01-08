@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: org.mapsforge:mapsforge-map-android:0.10.0@jar">
+  <library name="Gradle: org.mapsforge:mapsforge-map-android:0.10.0">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.mapsforge/mapsforge-map-android/0.10.0/a0cfc190e9a5e06a315d7b554eecc7e7eca50567/mapsforge-map-android-0.10.0.jar!/" />
     </CLASSES>

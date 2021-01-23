@@ -25,16 +25,6 @@ import ru.ping.pda.Utils.VisualTreck
 import kotlin.random.Random
 
 
-/*
-фрагмент отображения карты OpenStreetMap
-предположительное использоване : отоброжение карты местности по полученым координатам gps c устройства,
-отоброжение курсора на карте по полученным данным.
-установка областей получнных от других источников, отрисовка трека. расположение объектов на карте создание ответных действий при приближении к заданному объекту.
-сохранение геоданных на устройстве(трека)
- */
-private const val ARG_PARAM_ON_TRACK = "track"
-private const val ARG_PARAM2 = "param2"
-//глобальные переменные для геопозиции--------------------------------------------------------------
 
 
 var fistrun: Boolean = true
@@ -55,10 +45,6 @@ class MapFragment : Fragment() {
     val gps = GPS()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param_track = it.getBoolean(ARG_PARAM_ON_TRACK)
-            param2 = it.getString(ARG_PARAM2)
-        }
 
     }
 
@@ -109,13 +95,7 @@ class MapFragment : Fragment() {
         polylain.color = resources.getColor(R.color.colorLine)
         if (settings.getSettingsShowTrack())
             drawTreck(mMap)
-        //------------------------------------------------------------------------------------------
-        //подключение к бд и запись значения
-        //var db: FirebaseDatabase = FirebaseDatabase.getInstance()
-        //var ref=db.getReference("pda")
-        //ref.setValue(settings.getSettingsPDA()+"|"+settings.getSettingsCommand())
-        //ref.child("dd").setValue("01011"+"|"+settings.getSettingsCommand())
-        //check_Pda_ID(view)
+
     }
 
     fun drawTreck(map:MapView){
@@ -166,8 +146,7 @@ class MapFragment : Fragment() {
         fun newInstance(ptrack: Boolean, param2: String) =
             MapFragment().apply {
                 arguments = Bundle().apply {
-                    putBoolean(ARG_PARAM_ON_TRACK, ptrack)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }

@@ -19,7 +19,6 @@
     <string name="get_out_command">Покинуть команду</string>
     <string name="delete">Удвлить</string>
     <string name="cancel">Отмена</string>
-    <strind name="defaul_pass">1111</strind>
-    <string name="default_team"></string>
+
 
 </resources>

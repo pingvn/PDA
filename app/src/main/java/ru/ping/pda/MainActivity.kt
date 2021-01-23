@@ -17,6 +17,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import ru.ping.pda.Data_Model.Pda_info
 import ru.ping.pda.Fragments.MapFragment
+import ru.ping.pda.Fragments.MessageFragment
 import ru.ping.pda.Fragments.SettingsFragment
 import ru.ping.pda.Utils.SettingsPda
 import kotlin.random.Random
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     //виды запуска фрагмента------------------------------------------------------------------------
     val FRAGMENT_MAP_NEW = "mew"
     val FRAGMENT_MAP_REFRESH = "refresh"
+    val FRAGMENT_MAP_MESSAGE = "message"
     var PERMISSION_REQUEST_CODE: Int = 0
 
     //название базы Realm
@@ -78,6 +80,10 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             //нажатие кнопки определения позиции
             R.id.id_button_PDA_POSITION -> {
                 runFragment(FRAGMENT_MAP_REFRESH)
+            }
+
+            R.id.id_button_PDA_MAIL->{
+                runFragment(FRAGMENT_MAP_MESSAGE)
             }
         }
 
@@ -223,6 +229,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             FRAGMENT_MAP_REFRESH -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.id_Conteiner_Fragment, MapFragment()).commit()
+            }
+            FRAGMENT_MAP_MESSAGE->{
+                supportFragmentManager.beginTransaction().replace(R.id.id_Conteiner_Fragment,MessageFragment()).commit()
             }
         }
 

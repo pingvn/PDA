@@ -1,16 +1,21 @@
 package ru.ping.pda.Utils
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
+import android.webkit.PermissionRequest
+import androidx.core.app.ActivityCompat
+import androidx.core.content.PermissionChecker
 import com.google.android.gms.location.*
 import io.realm.Realm
-import io.realm.RealmObject
 import org.osmdroid.api.IMapController
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Polyline
 import ru.ping.pda.Data_Model.GPS_DATA_MODEL
-import ru.ping.pda.Fragments.fistrun
+import ru.ping.pda.Fragments.MapFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,7 +25,7 @@ lateinit var locationCallback: LocationCallback
 
 
 class GPS {
-
+ //предоставление разрешений
     fun getLocationUpdate(
         context: Context,
         map: MapView,
@@ -67,7 +72,20 @@ class GPS {
     }
 
 
-    fun centerMapView(mapController: IMapController) {
+    fun centerMapView(mapController: IMapController,context:Context) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                    arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION),PermissionChecker.PERMISSION_GRANTED)
+            return
+        }
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null) {
                 mapController.setCenter(GeoPoint(location.latitude, location.longitude))
@@ -76,7 +94,21 @@ class GPS {
         }
     }
 
-    fun startLocationUpdate() {
+    fun startLocationUpdate(context: MapFragment) {
+        if (ActivityCompat.checkSelfPermission(
+                context.context!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context.context!!,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION),PermissionChecker.PERMISSION_GRANTED)
+
+            return
+        }
         fusedLocationProviderClient.requestLocationUpdates(
             locationRequest,
             locationCallback,

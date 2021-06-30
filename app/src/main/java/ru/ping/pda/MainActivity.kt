@@ -11,7 +11,9 @@ import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import com.google.firebase.database.FirebaseDatabase
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -19,6 +21,7 @@ import ru.ping.pda.Data_Model.Pda_info
 import ru.ping.pda.Fragments.MapFragment
 import ru.ping.pda.Fragments.SettingsFragment
 import ru.ping.pda.Utils.SettingsPda
+import java.util.jar.Manifest
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         //----------------------------------------------
-        check_permissions()
+        //check_permissions()
         check_Pda_ID()
         val save = SettingsPda(this)
         save.savePda_id("1111")
@@ -85,7 +88,18 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     //----------------------------------------------------------------------------------------------
     //функция проверки разрешений
     fun check_permissions() {
-        // var param_add_string = "Для работы приложения необходимо включить разрешения."
+//        var check_gps_1 = false
+//        var check_write_storage = false
+//        var permissionStatusGPS = ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)
+//        var permissionStatusStorage = ContextCompat.checkSelfPermission(this,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//        if ((permissionStatusGPS == PackageManager.PERMISSION_GRANTED)&&(permissionStatusStorage==PackageManager.PERMISSION_GRANTED)){
+//             check_gps_1 = true
+//             check_write_storage = true
+//        }else {
+//                ActivityCompat.requestPermissions(this,
+//                    arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.WRITE_EXTERNAL_STORAGE),PERMISSION_REQUEST_CODE)
+//        }
+//         var param_add_string = "Для работы приложения необходимо включить разрешения."
         var check_gps_1 = false
         var check_write_storage = false
         var list_permission_guery = ArrayList<String>()
@@ -208,6 +222,15 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         position_Button.setOnClickListener(this)
 
     }
+//
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//
+//    }
 //----------------------------------------------------------------------------------------------
 //проверка и генерация номера
 

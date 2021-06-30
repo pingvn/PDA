@@ -3,6 +3,10 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e4a3ca715f77297d142921941074174/osmdroid-wms-6.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e4a3ca715f77297d142921941074174/osmdroid-wms-6.1.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f0b705a6cdb21ab416736a182193092b/jetified-osmdroid-wms-6.1.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c3313f35eb4927c4f7731a7b45814d26/jetified-osmdroid-wms-6.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c3313f35eb4927c4f7731a7b45814d26/jetified-osmdroid-wms-6.1.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c3313f35eb4927c4f7731a7b45814d26/jetified-osmdroid-wms-6.1.0/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.osmdroid/osmdroid-wms/6.1.0/8a4b2d8d4c38839da8b3e43515d1359b2f265a06/osmdroid-wms-6.1.0-javadoc.jar!/" />

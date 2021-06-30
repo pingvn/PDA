@@ -10,19 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.google.firebase.database.FirebaseDatabase
 import org.osmdroid.api.IMapController
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
-import org.w3c.dom.Text
-import ru.ping.pda.Data_Model.Pda_info
 import ru.ping.pda.R
 import ru.ping.pda.Utils.GPS
 import ru.ping.pda.Utils.SettingsPda
 import ru.ping.pda.Utils.VisualTreck
-import kotlin.random.Random
 
 
 /*
@@ -79,7 +75,7 @@ class MapFragment : Fragment() {
         )
         if (fistrun) {
             fistrun = false
-            gps.centerMapView(mapController)
+            gps.centerMapView(mapController,mView.context)
         }
         return mView
     }
@@ -133,7 +129,7 @@ class MapFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        gps.startLocationUpdate()
+        gps.startLocationUpdate(this)
     }
 
     override fun onPause() {
